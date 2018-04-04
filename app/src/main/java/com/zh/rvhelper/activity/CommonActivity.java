@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Toast;
 
 
-import com.zh.adapterhelperlibrary.callback.OnItemClickListener;
 import com.zh.adapterhelperlibrary.callback.OnItemLongClickListener;
 import com.zh.rvhelper.R;
 import com.zh.rvhelper.adapter.CommonAdapter;
