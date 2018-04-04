@@ -13,4 +13,7 @@ package com.zh.adapterhelperlibrary.data;
 public interface Constans {
     int BASE_TYPE_HEADER = 100000;
     int BASE_TYPE_FOOTER = 200000;
+
+    int GROUP_TYPE_HEAD = 300000;
+    int GROUP_TYPE_ITEM = 400000;
 }

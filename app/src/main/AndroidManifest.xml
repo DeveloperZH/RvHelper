@@ -19,6 +19,7 @@
 
         <activity android:name=".activity.CommonActivity" />
         <activity android:name=".activity.MultiActivity" />
+        <activity android:name=".activity.GroupActivity"/>
     </application>
 
 </manifest>

@@ -22,7 +22,7 @@ import com.zh.rvhelper.R;
  */
 public class HomeActivity extends Activity {
 
-    private TextView tv_common, tv_multi;
+    private TextView tv_common, tv_multi,tv_group;
     private Intent intent;
 
     @Override
@@ -32,6 +32,7 @@ public class HomeActivity extends Activity {
 
         tv_common = findViewById(R.id.tv_common);
         tv_multi = findViewById(R.id.tv_multi);
+        tv_group = findViewById(R.id.tv_group);
 
         bindEvent();
     }
@@ -51,6 +52,14 @@ public class HomeActivity extends Activity {
             public void onClick(View v) {
               intent = new Intent(HomeActivity.this,MultiActivity.class);
               startActivity(intent);
+            }
+        });
+
+        tv_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(HomeActivity.this,GroupActivity.class);
+                startActivity(intent);
             }
         });
     }
