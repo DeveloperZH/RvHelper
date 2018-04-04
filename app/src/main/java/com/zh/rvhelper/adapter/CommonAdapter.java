@@ -1,6 +1,8 @@
 package com.zh.rvhelper.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 
@@ -27,8 +29,14 @@ public class CommonAdapter extends BaseRvAdapter<String, BaseViewHolder> {
     }
 
     @Override
-    public void convert(BaseViewHolder helper, String item) {
+    public void convert(BaseViewHolder helper, String item, final int position) {
         TextView textView = helper.getView(R.id.tv);
         textView.setText("" + item);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("CommonAdapter",position + "---");
+            }
+        });
     }
 }

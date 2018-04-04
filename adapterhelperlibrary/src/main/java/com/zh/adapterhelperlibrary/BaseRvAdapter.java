@@ -54,7 +54,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         this(layoutResId, null);
     }
 
-    public abstract void convert(K helper, T item);
+    public abstract void convert(K helper, T item,int position);
 
     @SuppressWarnings("unchecked")
     @Override
@@ -81,7 +81,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
             return;
         }
         if (mData != null) {
-            convert(holder, mData.get(position - mHeaderViews.size()));
+            convert(holder, mData.get(position - mHeaderViews.size()),position - mHeaderViews.size());
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

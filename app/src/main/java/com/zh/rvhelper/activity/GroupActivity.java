@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.zh.rvhelper.R;
-import com.zh.rvhelper.adapter.GroupAdapter;
+import com.zh.rvhelper.adapter.MyGroupAdapter;
 import com.zh.rvhelper.entity.ContactEntity;
 import com.zh.rvhelper.util.ContactComparator;
 import com.zh.rvhelper.util.Util;

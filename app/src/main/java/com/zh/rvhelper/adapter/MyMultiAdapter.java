@@ -1,6 +1,7 @@
 package com.zh.rvhelper.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.zh.adapterhelperlibrary.BaseMultiAdapter;
@@ -27,12 +28,13 @@ public class MyMultiAdapter extends BaseMultiAdapter<DataModel, BaseViewHolder> 
     public MyMultiAdapter(@Nullable List<DataModel> data) {
         super(data);
         bindTypeToView(DataModel.TYPE_ONE, R.layout.item1);
-        bindTypeToView(DataModel.TYPE_TWO,R.layout.item2);
-        bindTypeToView(DataModel.TYPE_THREE,R.layout.item3);
+        bindTypeToView(DataModel.TYPE_TWO, R.layout.item2);
+        bindTypeToView(DataModel.TYPE_THREE, R.layout.item3);
     }
 
     @Override
-    public void convert(BaseViewHolder helper, DataModel item) {
+    public void convert(BaseViewHolder helper, DataModel item, int position) {
+        Log.i("MyMultiAdapter", position + "****");
         int viewType = helper.getItemViewType();
         switch (viewType) {
             case DataModel.TYPE_ONE:

@@ -1,6 +1,7 @@
-package com.zh.rvhelper.activity;
+package com.zh.rvhelper.adapter;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.zh.adapterhelperlibrary.BaseMultiAdapter;
@@ -29,7 +30,8 @@ public class MyGroupAdapter extends BaseMultiAdapter<ContactEntity, BaseViewHold
     }
 
     @Override
-    public void convert(BaseViewHolder helper, ContactEntity item) {
+    public void convert(BaseViewHolder helper, ContactEntity item,int position) {
+        Log.i("MyGroupAdapter",position + "****");
         int viewType = helper.getItemViewType();
         switch (viewType){
             case ContactEntity.ITEM_TYPE_HEAD:

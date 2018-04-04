@@ -56,12 +56,12 @@ public class CommonActivity extends AppCompatActivity {
                 mCommonAdapter.addFooterView(headView);
             }
         });
-        mCommonAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void itemClick(View view, int position) {
-                Toast.makeText(CommonActivity.this, "itemClick = " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
+//        mCommonAdapter.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void itemClick(View view, int position) {
+//                Toast.makeText(CommonActivity.this, "itemClick = " + position, Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
         mCommonAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
