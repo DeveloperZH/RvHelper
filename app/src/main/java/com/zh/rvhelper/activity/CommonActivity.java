@@ -43,7 +43,7 @@ public class CommonActivity extends AppCompatActivity {
         footView = LayoutInflater.from(this).inflate(R.layout.foot_view, null);
         mCommonAdapter.addFooterView(footView);
         mRecycleView.setAdapter(mCommonAdapter);
-        mCommonAdapter.setItemAnimation(AnimationType.ENTER_LEFT);
+//        mCommonAdapter.setItemAnimation(AnimationType.ENTER_LEFT);
 
         headView.setOnClickListener(new View.OnClickListener() {
 
