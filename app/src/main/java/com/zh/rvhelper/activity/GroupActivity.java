@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.zh.adapterhelperlibrary.data.AnimationType;
 import com.zh.rvhelper.R;
 import com.zh.rvhelper.adapter.MyGroupAdapter;
 import com.zh.rvhelper.entity.ContactEntity;
@@ -88,5 +89,6 @@ public class GroupActivity extends Activity {
 //        mGroupAdapter = new GroupAdapter(this, resultList);
         mGroupAdapter = new MyGroupAdapter(resultList);
         mRecyclerView.setAdapter(mGroupAdapter);
+         mGroupAdapter.setItemAnimation(AnimationType.ENTER_LEFT);
     }
 }

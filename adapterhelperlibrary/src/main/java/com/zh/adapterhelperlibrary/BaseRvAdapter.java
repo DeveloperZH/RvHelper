@@ -1,19 +1,28 @@
 package com.zh.adapterhelperlibrary;
 
+import android.animation.Animator;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 
 
+import com.zh.adapterhelperlibrary.animation.AlphaAnimation;
+import com.zh.adapterhelperlibrary.animation.EnterLeftAnimation;
+import com.zh.adapterhelperlibrary.animation.EnterRightAnimation;
+import com.zh.adapterhelperlibrary.callback.BaseAnimation;
 import com.zh.adapterhelperlibrary.callback.OnItemClickListener;
 import com.zh.adapterhelperlibrary.callback.OnItemLongClickListener;
-import com.zh.adapterhelperlibrary.data.Constans;
+import com.zh.adapterhelperlibrary.data.AnimationType;
+import com.zh.adapterhelperlibrary.data.BaseConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +40,12 @@ import java.util.List;
  */
 public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends RecyclerView.Adapter<K> {
 
+    //
+    private boolean isOpenAnimation = false;  //默认开启动画
+    private BaseAnimation mSelectAnimation;
+    private BaseAnimation mDefaultAnimation = new AlphaAnimation();
+    private Interpolator mInterpolator = new LinearInterpolator();
+    //
     List<T> mData;
     private int mLayoutResId;
     private OnItemClickListener mOnItemClickListener;
@@ -50,11 +65,8 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         this(0, data);
     }
 
-    public BaseRvAdapter(@LayoutRes int layoutResId) {
-        this(layoutResId, null);
-    }
 
-    public abstract void convert(K helper, T item,int position);
+    public abstract void convert(K helper, T item, int position);
 
     @SuppressWarnings("unchecked")
     @Override
@@ -81,7 +93,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
             return;
         }
         if (mData != null) {
-            convert(holder, mData.get(position - mHeaderViews.size()),position - mHeaderViews.size());
+            convert(holder, mData.get(position - mHeaderViews.size()), position - mHeaderViews.size());
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,27 +148,33 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         return position >= mHeaderViews.size() + mData.size();
     }
 
+    /**
+     * add HeadView
+     */
     public void addHeadView(View view) {
         if (mHeaderViews != null && mHeaderViews.size() > 0) {
             for (int i = 0; i < mHeaderViews.size(); i++) {
-                if (mHeaderViews.get(i + Constans.BASE_TYPE_HEADER) == view) {
+                if (mHeaderViews.get(i + BaseConstants.BASE_TYPE_HEADER) == view) {
                     return;
                 }
             }
         }
-        mHeaderViews.put(mHeaderViews.size() + Constans.BASE_TYPE_HEADER, view);
+        mHeaderViews.put(mHeaderViews.size() + BaseConstants.BASE_TYPE_HEADER, view);
         notifyDataSetChanged();
     }
 
+    /**
+     * addFootView
+     */
     public void addFooterView(View view) {
         if (mFooterViews != null && mFooterViews.size() > 0) {
             for (int i = 0; i < mFooterViews.size(); i++) {
-                if (mFooterViews.get(i + Constans.BASE_TYPE_FOOTER) == view) {
+                if (mFooterViews.get(i + BaseConstants.BASE_TYPE_FOOTER) == view) {
                     return;
                 }
             }
         }
-        mFooterViews.put(mFooterViews.size() + Constans.BASE_TYPE_FOOTER, view);
+        mFooterViews.put(mFooterViews.size() + BaseConstants.BASE_TYPE_FOOTER, view);
         notifyDataSetChanged();
     }
 
@@ -170,7 +188,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    return getItemViewType(position) == Constans.BASE_TYPE_HEADER
+                    return getItemViewType(position) == BaseConstants.BASE_TYPE_HEADER
                             ? gridManager.getSpanCount() : 1;
                 }
             });
@@ -185,6 +203,62 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
             StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
             p.setFullSpan(holder.getLayoutPosition() == 0);
+        } else {
+            Log.i("onViewAttachedToWindow", "onViewAttachedToWindow");
+            addItemAnimation(holder);
         }
     }
+
+    /***********************************Item动画相关逻辑**********************************************************/
+
+    /**
+     * open animation?
+     */
+    public void setOpenAnomation(boolean isOpenAnimation) {
+        this.isOpenAnimation = isOpenAnimation;
+    }
+
+    /**
+     * add item Animation
+     *
+     * @param animationType
+     */
+    public void setItemAnimation(AnimationType animationType) {
+        if (!isOpenAnimation) {
+            isOpenAnimation = true;
+        }
+        switch (animationType) {
+            case ALPHA:
+                mSelectAnimation = new AlphaAnimation();
+                break;
+            case ENTER_LEFT:
+                mSelectAnimation = new EnterLeftAnimation();
+                break;
+            case ENTER_RIGHT:
+                mSelectAnimation = new EnterRightAnimation();
+                break;
+
+        }
+    }
+
+
+    private void addItemAnimation(BaseViewHolder holder) {
+        if (isOpenAnimation) {
+            BaseAnimation animation;
+            if (mSelectAnimation == null) {
+                animation = mDefaultAnimation;
+            } else {
+                animation = mSelectAnimation;
+            }
+            for (Animator animator : animation.getAnimation(holder.itemView)) {
+                startAnim(animator);
+            }
+        }
+    }
+
+    private void startAnim(Animator anim) {
+        anim.setDuration(BaseConstants.DEFAULT_ANIMATION_TIME).start();
+        anim.setInterpolator(mInterpolator);
+    }
+
 }
