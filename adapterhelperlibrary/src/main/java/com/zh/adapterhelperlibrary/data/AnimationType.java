@@ -1,17 +1,22 @@
 package com.zh.adapterhelperlibrary.data;
 
 /**
- * <p>公司名       tsingning</p>
- * <p>创建者       Z H</p>
- * <p>创建时间     2018/6/12 13:43</p>
- * <p>包名         com.zh.adapterhelperlibrary.data</p>
- * <p>描述         item动画的类型 </p>
- * <p>svn版本      $Revision$ </p>
- * <p>更新者       $Author$</p>
- * <p>更新时间     $Date$</p>
+ * @describe: 动画类型的枚举
+ * @author: Z H
+ * @date: 2018/7/11 13:31
+ * @version: ${version}
  */
 public enum AnimationType {
+    /**
+     * 渐变动画
+     */
     ALPHA,
+    /**
+     * 从左边进入动画
+     */
     ENTER_LEFT,
+    /**
+     * 从右边进入动画
+     */
     ENTER_RIGHT
 }

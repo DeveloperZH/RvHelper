@@ -6,21 +6,18 @@ import android.util.SparseArray;
 import android.view.View;
 
 /**
- * <p>公司名       tsingning</p>
- * <p>创建者       Z H</p>
- * <p>创建时间     2018/1/24 16:34</p>
- * <p>包名         com.zh.rvadapterhelper</p>
- * <p>描述         TODO </p>
- * <p>svn版本      $Revision$ </p>
- * <p>更新者       $Author$</p>
- * <p>更新时间     $Date$</p>
+ * @describe: BaseViewHolder
+ *    user有需要可以继承此类实现自己的viewHolder
+ * @author: Z H
+ * @date: 2018/7/11 13:31
+ * @version: ${version}
  */
 public class BaseViewHolder extends RecyclerView.ViewHolder {
 
 
     private final SparseArray<View> views;
 
-    public BaseViewHolder(View itemView) {
+    BaseViewHolder(View itemView) {
         super(itemView);
         this.views = new SparseArray<>();
     }
@@ -34,4 +31,5 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         }
         return (T) view;
     }
+
 }

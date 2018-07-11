@@ -1,6 +1,7 @@
 package com.zh.adapterhelperlibrary;
 
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.util.SparseArrayCompat;
@@ -27,25 +28,22 @@ import com.zh.adapterhelperlibrary.data.BaseConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
- * <p>公司名       tsingning</p>
- * <p>创建者       Z H</p>
- * <p>创建时间     2018/1/24 16:41</p>
- * <p>包名         com.zh.rvadapterhelper</p>
- * <p>描述         RVAdapter的基类  普通列表直接继承该类即可</p>
- * <p>svn版本      $Revision$ </p>
- * <p>更新者       $Author$</p>
- * <p>更新时间     $Date$</p>
+ * @describe: RVAdapter的基类  普通列表直接继承该类即可
+ * @author: Z H
+ * @date: 2018/7/11 13:31
+ * @version: ${version}
  */
 public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends RecyclerView.Adapter<K> {
 
-    //
-    private boolean isOpenAnimation = false;  //默认开启动画
     private BaseAnimation mSelectAnimation;
     private BaseAnimation mDefaultAnimation = new AlphaAnimation();
     private Interpolator mInterpolator = new LinearInterpolator();
-    //
+    /**
+     * 默认不开启动画
+     */
+    private boolean isOpenAnimation = false;
+
     List<T> mData;
     private int mLayoutResId;
     private OnItemClickListener mOnItemClickListener;
@@ -61,14 +59,10 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         }
     }
 
-    public BaseRvAdapter(@Nullable List<T> data) {
+    BaseRvAdapter(@Nullable List<T> data) {
         this(0, data);
     }
 
-
-    public abstract void convert(K helper, T item, int position);
-
-    @SuppressWarnings("unchecked")
     @Override
     public K onCreateViewHolder(ViewGroup parent, int viewType) {
         K baseViewHolder;
@@ -88,7 +82,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
     }
 
     @Override
-    public void onBindViewHolder(final K holder, final int position) {
+    public void onBindViewHolder(final K holder, @SuppressLint("RecyclerView") final int position) {
         if (isHeadView(position) || isFooterView(position)) {
             return;
         }
@@ -148,35 +142,6 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         return position >= mHeaderViews.size() + mData.size();
     }
 
-    /**
-     * add HeadView
-     */
-    public void addHeadView(View view) {
-        if (mHeaderViews != null && mHeaderViews.size() > 0) {
-            for (int i = 0; i < mHeaderViews.size(); i++) {
-                if (mHeaderViews.get(i + BaseConstants.BASE_TYPE_HEADER) == view) {
-                    return;
-                }
-            }
-        }
-        mHeaderViews.put(mHeaderViews.size() + BaseConstants.BASE_TYPE_HEADER, view);
-        notifyDataSetChanged();
-    }
-
-    /**
-     * addFootView
-     */
-    public void addFooterView(View view) {
-        if (mFooterViews != null && mFooterViews.size() > 0) {
-            for (int i = 0; i < mFooterViews.size(); i++) {
-                if (mFooterViews.get(i + BaseConstants.BASE_TYPE_FOOTER) == view) {
-                    return;
-                }
-            }
-        }
-        mFooterViews.put(mFooterViews.size() + BaseConstants.BASE_TYPE_FOOTER, view);
-        notifyDataSetChanged();
-    }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -237,7 +202,9 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
             case ENTER_RIGHT:
                 mSelectAnimation = new EnterRightAnimation();
                 break;
-
+            default:
+                mSelectAnimation = new AlphaAnimation();
+                break;
         }
     }
 
@@ -260,5 +227,48 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         anim.setDuration(BaseConstants.DEFAULT_ANIMATION_TIME).start();
         anim.setInterpolator(mInterpolator);
     }
+
+
+    /***************************暴露给user的方法*********************************************************/
+
+    /**
+     * 继承BaseRvAdapter 必须实现该方法
+     *
+     * @param helper   BaseViewHolder本身或其子类
+     * @param item     当前Item的数据集
+     * @param position 当前item的position
+     */
+    public abstract void convert(K helper, T item, int position);
+
+    /**
+     * add HeadView
+     */
+    public void addHeadView(View view) {
+        if (mHeaderViews != null && mHeaderViews.size() > 0) {
+            for (int i = 0; i < mHeaderViews.size(); i++) {
+                if (mHeaderViews.get(i + BaseConstants.BASE_TYPE_HEADER) == view) {
+                    return;
+                }
+            }
+        }
+        mHeaderViews.put(mHeaderViews.size() + BaseConstants.BASE_TYPE_HEADER, view);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * addFootView
+     */
+    public void addFooterView(View view) {
+        if (mFooterViews != null && mFooterViews.size() > 0) {
+            for (int i = 0; i < mFooterViews.size(); i++) {
+                if (mFooterViews.get(i + BaseConstants.BASE_TYPE_FOOTER) == view) {
+                    return;
+                }
+            }
+        }
+        mFooterViews.put(mFooterViews.size() + BaseConstants.BASE_TYPE_FOOTER, view);
+        notifyDataSetChanged();
+    }
+
 
 }

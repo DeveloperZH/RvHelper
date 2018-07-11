@@ -7,16 +7,18 @@ import android.view.animation.Animation;
 import java.util.List;
 
 /**
- * <p>公司名       tsingning</p>
- * <p>创建者       Z H</p>
- * <p>创建时间     2018/6/12 13:22</p>
- * <p>包名         com.zh.adapterhelperlibrary.callback</p>
- * <p>描述         Rv的item动画的基类 </p>
- * <p>svn版本      $Revision$ </p>
- * <p>更新者       $Author$</p>
- * <p>更新时间     $Date$</p>
+ * @describe: 渐变的动画
+ * @author: Z H
+ * @date: 2018/7/11 13:31
+ * @version: ${version}
  */
 public interface BaseAnimation {
 
+    /**
+     * get animation of View
+     *
+     * @param view rv的itemView
+     * @return List<Animator> view的动画集合
+     */
     List<Animator> getAnimation(View view);
 }

@@ -12,16 +12,11 @@ import android.view.ViewGroup;
 import com.zh.adapterhelperlibrary.entity.BaseMultiEntity;
 
 import java.util.List;
-
 /**
- * <p>公司名       tsingning</p>
- * <p>创建者       Z H</p>
- * <p>创建时间     2018/1/25 16:50</p>
- * <p>包名         com.zh.rvadapterhelper</p>
- * <p>描述         多布局的BaseAdapter  该实体需要实现BaseMultiEntity接口</p>
- * <p>svn版本      $Revision$ </p>
- * <p>更新者       $Author$</p>
- * <p>更新时间     $Date$</p>
+ * @describe: 多布局的BaseAdapter  该实体需要实现BaseMultiEntity接口
+ * @author: Z H
+ * @date: 2018/7/11 13:31
+ * @version: ${version}
  */
 public abstract class BaseMultiAdapter<T extends BaseMultiEntity, K extends BaseViewHolder> extends BaseRvAdapter<T, K> {
 
@@ -46,7 +41,7 @@ public abstract class BaseMultiAdapter<T extends BaseMultiEntity, K extends Base
     @Override
     public K onCreateViewHolder(ViewGroup parent, int viewType) {
         K baseViewHolder;
-        View itemView = null;
+        View itemView;
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         if (mHeaderViews.get(viewType) != null) {
             mHeaderViews.get(viewType).setLayoutParams(params);
