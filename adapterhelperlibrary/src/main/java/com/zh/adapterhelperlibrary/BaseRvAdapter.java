@@ -43,7 +43,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         implements OpenCallback {
 
     private BaseAnimation mSelectAnimation;
-    private BaseAnimation mDefaultAnimation = new AlphaAnimation();
+    private BaseAnimation mDefaultAnimation = new EnterLeftAnimation();
     private Interpolator mInterpolator = new LinearInterpolator();
     /**
      * 默认不开启动画
@@ -88,7 +88,6 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         return baseViewHolder;
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(final K holder, @SuppressLint("RecyclerView") final int position) {
         if (isHeadView(position) || isFooterView(position)) {
@@ -115,7 +114,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
                 return true;
             }
         });
-        }
+    }
 
     @Override
     public int getItemCount() {
@@ -177,31 +176,45 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
             StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
             p.setFullSpan(holder.getLayoutPosition() == 0);
         } else {
-            Log.i("onViewAttachedToWindow", "onViewAttachedToWindow");
             addItemAnimation(holder);
         }
     }
 
+    /**
+     * 处理recycleView的滑动监听
+     *
+     * @param recyclerView 当前调用adapter的recycleView
+     */
+    private void doRvScroll(RecyclerView recyclerView) {
+        if (null == recyclerView) {
+            throw new NullPointerException("请在setAdapter()方法之后调用adapter.attachRecycleView()");
+        }
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    isOpenAnimation = true;
+                } else if (dy < 0) {
+                    isOpenAnimation = false;
+                } else {
+                    isOpenAnimation = false;
+                }
+            }
+        });
+    }
+
     /***********************************Item动画相关逻辑**********************************************************/
 
-    /**
-     * open animation?
-     */
+
     @Override
     public void setOpenAnimation(boolean isOpenAnimation) {
         this.isOpenAnimation = isOpenAnimation;
     }
 
-    /**
-     * add item Animation
-     *
-     * @param animationType
-     */
+
     @Override
     public void setItemAnimation(AnimationType animationType) {
-        if (!isOpenAnimation) {
-            isOpenAnimation = true;
-        }
         switch (animationType) {
             case ALPHA:
                 mSelectAnimation = new AlphaAnimation();
@@ -213,7 +226,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
                 mSelectAnimation = new EnterRightAnimation();
                 break;
             default:
-                mSelectAnimation = new AlphaAnimation();
+                mSelectAnimation = new EnterLeftAnimation();
                 break;
         }
     }
@@ -239,7 +252,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
     }
 
 
-    /***************************暴露给user的方法*********************************************************/
+    /***************************通用方法*********************************************************/
 
     /**
      * 继承BaseRvAdapter 必须实现该方法
@@ -248,12 +261,14 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
      * @param item     当前Item的数据集
      * @param position 当前item的position
      */
-    public abstract void convert(K helper, T item, int position);
+    protected abstract void convert(K helper, T item, int position);
+
+    @Override
+    public void attachRecycleView(RecyclerView recyclerView) {
+        doRvScroll(recyclerView);
+    }
 
 
-    /**
-     * add HeadView
-     */
     @Override
     public void addHeadView(View view) {
         if (mHeaderViews != null && mHeaderViews.size() > 0) {
@@ -267,9 +282,6 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         notifyDataSetChanged();
     }
 
-    /**
-     * addFootView
-     */
     @Override
     public void addFooterView(View view) {
         if (mFooterViews != null && mFooterViews.size() > 0) {

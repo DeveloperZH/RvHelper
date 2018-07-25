@@ -30,7 +30,7 @@ public class MyGroupAdapter extends BaseMultiAdapter<ContactEntity, BaseViewHold
     }
 
     @Override
-    public void convert(BaseViewHolder helper, ContactEntity item,int position) {
+    protected void convert(BaseViewHolder helper, ContactEntity item, int position) {
         Log.i("MyGroupAdapter",position + "****");
         int viewType = helper.getItemViewType();
         switch (viewType){
@@ -44,4 +44,6 @@ public class MyGroupAdapter extends BaseMultiAdapter<ContactEntity, BaseViewHold
                 break;
         }
     }
+
+
 }

@@ -41,7 +41,7 @@ public class GroupActivity extends Activity {
     private List<ContactEntity> resultList;
 
 
-     @Override
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
@@ -89,6 +89,8 @@ public class GroupActivity extends Activity {
 //        mGroupAdapter = new GroupAdapter(this, resultList);
         mGroupAdapter = new MyGroupAdapter(resultList);
         mRecyclerView.setAdapter(mGroupAdapter);
-         mGroupAdapter.setItemAnimation(AnimationType.ENTER_LEFT);
+        mGroupAdapter.attachRecycleView(mRecyclerView);
+        mGroupAdapter.setOpenAnimation(true);
+        mGroupAdapter.setItemAnimation(AnimationType.ENTER_LEFT);
     }
 }

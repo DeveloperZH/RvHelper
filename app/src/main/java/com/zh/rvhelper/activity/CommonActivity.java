@@ -42,7 +42,8 @@ public class CommonActivity extends AppCompatActivity {
         footView = LayoutInflater.from(this).inflate(R.layout.foot_view, null);
         mCommonAdapter.addFooterView(footView);
         mRecycleView.setAdapter(mCommonAdapter);
-//        mCommonAdapter.setItemAnimation(AnimationType.ENTER_LEFT);
+        mCommonAdapter.attachRecycleView(mRecycleView);
+        mCommonAdapter.setItemAnimation(AnimationType.ENTER_RIGHT);
 
         headView.setOnClickListener(new View.OnClickListener() {
 
@@ -70,6 +71,19 @@ public class CommonActivity extends AppCompatActivity {
                 Toast.makeText(CommonActivity.this, "longClick = " + position, Toast.LENGTH_SHORT).show();
             }
         });
+
+//        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                Log.i("AbstractScrollWrapper", "dy ==> " + dy);
+//            }
+//        });
     }
 
     protected void initData() {
