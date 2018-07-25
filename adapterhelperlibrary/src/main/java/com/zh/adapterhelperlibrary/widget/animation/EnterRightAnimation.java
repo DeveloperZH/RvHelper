@@ -1,4 +1,4 @@
-package com.zh.adapterhelperlibrary.animation;
+package com.zh.adapterhelperlibrary.widget.animation;
 
 import android.animation.Animator;
 import android.animation.ObjectAnimator;

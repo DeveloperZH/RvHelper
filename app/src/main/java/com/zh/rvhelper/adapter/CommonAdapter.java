@@ -24,6 +24,7 @@ import java.util.List;
  */
 public class CommonAdapter extends BaseRvAdapter<String, BaseViewHolder> {
 
+
     public CommonAdapter(@Nullable List<String> data) {
         super(R.layout.item, data);
     }

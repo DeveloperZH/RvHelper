@@ -2,8 +2,11 @@ package com.zh.adapterhelperlibrary;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,9 +19,11 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
 
-import com.zh.adapterhelperlibrary.animation.AlphaAnimation;
-import com.zh.adapterhelperlibrary.animation.EnterLeftAnimation;
-import com.zh.adapterhelperlibrary.animation.EnterRightAnimation;
+import com.zh.adapterhelperlibrary.callback.OpenCallback;
+import com.zh.adapterhelperlibrary.widget.AbstractScrollWrapper;
+import com.zh.adapterhelperlibrary.widget.animation.AlphaAnimation;
+import com.zh.adapterhelperlibrary.widget.animation.EnterLeftAnimation;
+import com.zh.adapterhelperlibrary.widget.animation.EnterRightAnimation;
 import com.zh.adapterhelperlibrary.callback.BaseAnimation;
 import com.zh.adapterhelperlibrary.callback.OnItemClickListener;
 import com.zh.adapterhelperlibrary.callback.OnItemLongClickListener;
@@ -34,7 +39,8 @@ import java.util.List;
  * @date: 2018/7/11 13:31
  * @version: ${version}
  */
-public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends RecyclerView.Adapter<K> {
+public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends RecyclerView.Adapter<K>
+        implements OpenCallback {
 
     private BaseAnimation mSelectAnimation;
     private BaseAnimation mDefaultAnimation = new AlphaAnimation();
@@ -63,6 +69,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         this(0, data);
     }
 
+
     @Override
     public K onCreateViewHolder(ViewGroup parent, int viewType) {
         K baseViewHolder;
@@ -81,6 +88,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         return baseViewHolder;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onBindViewHolder(final K holder, @SuppressLint("RecyclerView") final int position) {
         if (isHeadView(position) || isFooterView(position)) {
@@ -107,7 +115,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
                 return true;
             }
         });
-    }
+        }
 
     @Override
     public int getItemCount() {
@@ -179,7 +187,8 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
     /**
      * open animation?
      */
-    public void setOpenAnomation(boolean isOpenAnimation) {
+    @Override
+    public void setOpenAnimation(boolean isOpenAnimation) {
         this.isOpenAnimation = isOpenAnimation;
     }
 
@@ -188,6 +197,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
      *
      * @param animationType
      */
+    @Override
     public void setItemAnimation(AnimationType animationType) {
         if (!isOpenAnimation) {
             isOpenAnimation = true;
@@ -240,9 +250,11 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
      */
     public abstract void convert(K helper, T item, int position);
 
+
     /**
      * add HeadView
      */
+    @Override
     public void addHeadView(View view) {
         if (mHeaderViews != null && mHeaderViews.size() > 0) {
             for (int i = 0; i < mHeaderViews.size(); i++) {
@@ -258,6 +270,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
     /**
      * addFootView
      */
+    @Override
     public void addFooterView(View view) {
         if (mFooterViews != null && mFooterViews.size() > 0) {
             for (int i = 0; i < mFooterViews.size(); i++) {

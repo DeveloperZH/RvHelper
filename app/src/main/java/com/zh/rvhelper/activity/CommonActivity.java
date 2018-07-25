@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Toast;
 
 
-import com.zh.adapterhelperlibrary.animation.AlphaAnimation;
 import com.zh.adapterhelperlibrary.callback.OnItemLongClickListener;
 import com.zh.adapterhelperlibrary.data.AnimationType;
 import com.zh.rvhelper.R;
