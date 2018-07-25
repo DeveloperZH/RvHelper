@@ -19,8 +19,8 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
 
+import com.zh.adapterhelperlibrary.callback.OnItemDragCallback;
 import com.zh.adapterhelperlibrary.callback.OpenCallback;
-import com.zh.adapterhelperlibrary.widget.AbstractScrollWrapper;
 import com.zh.adapterhelperlibrary.widget.animation.AlphaAnimation;
 import com.zh.adapterhelperlibrary.widget.animation.EnterLeftAnimation;
 import com.zh.adapterhelperlibrary.widget.animation.EnterRightAnimation;
@@ -31,6 +31,7 @@ import com.zh.adapterhelperlibrary.data.AnimationType;
 import com.zh.adapterhelperlibrary.data.BaseConstants;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ import java.util.List;
  * @version: ${version}
  */
 public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends RecyclerView.Adapter<K>
-        implements OpenCallback {
+        implements OpenCallback,OnItemDragCallback {
 
     private BaseAnimation mSelectAnimation;
     private BaseAnimation mDefaultAnimation = new EnterLeftAnimation();
@@ -178,6 +179,19 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         } else {
             addItemAnimation(holder);
         }
+    }
+
+    @Override
+    public void onItemDateChange(int fromPos, int toPos) {
+        Log.i("onItemDateChange","'onItemDateChange");
+        Collections.swap(mData,fromPos,toPos);
+        notifyItemMoved(fromPos,toPos);
+    }
+
+    @Override
+    public void onItemSwipedDelete(int position) {
+        mData.remove(position);
+        notifyDataSetChanged();
     }
 
     /**
