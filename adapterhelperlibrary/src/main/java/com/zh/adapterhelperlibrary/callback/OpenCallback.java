@@ -1,11 +1,10 @@
 package com.zh.adapterhelperlibrary.callback;
 
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.zh.adapterhelperlibrary.data.AnimationType;
-import com.zh.adapterhelperlibrary.widget.BaseItemDragHelper;
+import com.zh.adapterhelperlibrary.BaseItemDragHelper;
 
 /**
  * @describe: adapter暴露给外部调用的方法
@@ -57,7 +56,7 @@ public interface OpenCallback {
 
     /**
      * 是否开启item的滑动模式
-     * 默认开启
+     * 默认关闭
      *
      * @param swipeEnabled true or false
      */

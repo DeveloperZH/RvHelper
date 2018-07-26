@@ -1,10 +1,8 @@
 package com.zh.rvhelper.util;
 
 
-import android.support.v7.widget.RecyclerView;
-
 import com.zh.adapterhelperlibrary.BaseRvAdapter;
-import com.zh.adapterhelperlibrary.widget.BaseItemDragHelper;
+import com.zh.adapterhelperlibrary.BaseItemDragHelper;
 
 /**
  * @describe: ${todo}

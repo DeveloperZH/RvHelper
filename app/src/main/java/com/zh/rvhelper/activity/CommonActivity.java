@@ -4,7 +4,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
@@ -13,10 +12,8 @@ import android.widget.Toast;
 import com.zh.adapterhelperlibrary.callback.OnItemClickListener;
 import com.zh.adapterhelperlibrary.callback.OnItemLongClickListener;
 import com.zh.adapterhelperlibrary.data.AnimationType;
-import com.zh.adapterhelperlibrary.widget.BaseItemDragHelper;
 import com.zh.rvhelper.R;
 import com.zh.rvhelper.adapter.CommonAdapter;
-import com.zh.rvhelper.util.MyDragCallBack;
 
 import java.util.ArrayList;
 import java.util.List;

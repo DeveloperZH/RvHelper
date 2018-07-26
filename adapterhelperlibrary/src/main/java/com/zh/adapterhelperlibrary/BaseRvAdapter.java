@@ -19,7 +19,6 @@ import android.view.animation.LinearInterpolator;
 
 import com.zh.adapterhelperlibrary.callback.OnItemDragCallback;
 import com.zh.adapterhelperlibrary.callback.OpenCallback;
-import com.zh.adapterhelperlibrary.widget.BaseItemDragHelper;
 import com.zh.adapterhelperlibrary.widget.animation.AlphaAnimation;
 import com.zh.adapterhelperlibrary.widget.animation.EnterLeftAnimation;
 import com.zh.adapterhelperlibrary.widget.animation.EnterRightAnimation;
@@ -270,7 +269,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
     @Override
     public void setDragCallback(BaseItemDragHelper helper) {
         if (null == mRecyclerView) {
-            throw new NullPointerException("请先调用attachRecycleView()绑定rv和adapter");
+            throw new NullPointerException("请先调用adapter.attachRecycleView()绑定rv和adapter");
         }
         this.mBaseItemDragHelper = helper;
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(helper);
@@ -280,7 +279,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
     @Override
     public void setItemSwipeEnabled(boolean isOpenDrag) {
         if (null == mBaseItemDragHelper) {
-            throw new NullPointerException("请先调用setDragCallback()方法");
+            throw new NullPointerException("请先调用adapter.setDragCallback()方法");
         }
         mBaseItemDragHelper.setItemViewSwipeEnabled(isOpenDrag);
     }
@@ -288,7 +287,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
     @Override
     public void setItemLongPressDragEnabled(boolean dragEnabled) {
         if (null == mBaseItemDragHelper) {
-            throw new NullPointerException("请先调用setDragCallback()方法");
+            throw new NullPointerException("请先调用adapter.setDragCallback()方法");
         }
         mBaseItemDragHelper.setItemLongPressDragEnabled(dragEnabled);
     }

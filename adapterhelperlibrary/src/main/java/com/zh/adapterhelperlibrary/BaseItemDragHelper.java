@@ -1,12 +1,10 @@
-package com.zh.adapterhelperlibrary.widget;
+package com.zh.adapterhelperlibrary;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-
-import com.zh.adapterhelperlibrary.BaseRvAdapter;
 
 
 /**
@@ -21,18 +19,28 @@ public abstract class BaseItemDragHelper extends ItemTouchHelper.Callback {
 
     private String TAG = BaseItemDragHelper.class.getSimpleName();
     private BaseRvAdapter mBaseAdapter;
-    private boolean itemViewSwipeEnabled = true;  //是否允许滑动
-    private boolean itemLongPressDragEnabled = true; //是否允许长按拖拽
+
+    /**
+     * 是否允许滑动
+     * 默认false
+     */
+    private boolean itemViewSwipeEnabled = false;
+    /**
+     * 是否允许长按拖拽
+     * 默认true
+     */
+    private boolean itemLongPressDragEnabled = true;
 
     public BaseItemDragHelper(BaseRvAdapter adapter) {
         this.mBaseAdapter = adapter;
     }
 
-    public void setItemViewSwipeEnabled(boolean itemViewSwipeEnabled) {
+
+    protected void setItemViewSwipeEnabled(boolean itemViewSwipeEnabled) {
         this.itemViewSwipeEnabled = itemViewSwipeEnabled;
     }
 
-    public void setItemLongPressDragEnabled(boolean longPressDragEnabled) {
+    protected void setItemLongPressDragEnabled(boolean longPressDragEnabled) {
         this.itemLongPressDragEnabled = longPressDragEnabled;
     }
 
@@ -116,12 +124,19 @@ public abstract class BaseItemDragHelper extends ItemTouchHelper.Callback {
     }
 
     /**
+     * 实现我们自定义的交互规则或者自定义的动画效果
+     */
+    @Override
+    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+    }
+
+    /**
      * 是否支持滑动
      * 默认支持 true
      */
     @Override
     public boolean isItemViewSwipeEnabled() {
-//        return super.isItemViewSwipeEnabled();
         return itemViewSwipeEnabled;
     }
 
@@ -131,15 +146,6 @@ public abstract class BaseItemDragHelper extends ItemTouchHelper.Callback {
      */
     @Override
     public boolean isLongPressDragEnabled() {
-//        return super.isLongPressDragEnabled();
         return itemLongPressDragEnabled;
-    }
-
-    /**
-     * 实现我们自定义的交互规则或者自定义的动画效果
-     */
-    @Override
-    public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
     }
 }

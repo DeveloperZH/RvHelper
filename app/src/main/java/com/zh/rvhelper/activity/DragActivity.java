@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.zh.adapterhelperlibrary.BaseRvAdapter;
 import com.zh.adapterhelperlibrary.BaseViewHolder;
-import com.zh.adapterhelperlibrary.widget.BaseItemDragHelper;
+import com.zh.adapterhelperlibrary.BaseItemDragHelper;
 import com.zh.rvhelper.R;
 
 import java.util.ArrayList;
@@ -42,18 +42,14 @@ public class DragActivity extends Activity {
         //添加item拖拽功能
         dragAdapter.attachRecycleView(mRecycleView);
         dragAdapter.setDragCallback(new MyDragHelper(dragAdapter));
+        //开启滑动删除功能
+        dragAdapter.setItemSwipeEnabled(true);
     }
 
     private class MyDragHelper extends BaseItemDragHelper {
 
         public MyDragHelper(BaseRvAdapter adapter) {
             super(adapter);
-        }
-
-        @Override
-        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-            super.clearView(recyclerView, viewHolder);
-            viewHolder.itemView.setBackgroundColor(Color.RED);
         }
     }
 
