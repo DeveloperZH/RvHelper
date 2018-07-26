@@ -42,7 +42,7 @@ publish {
     userOrg = 'developerzh'//bintray.com用户名
     groupId = 'com.zh'//jcenter上的路径
     artifactId = 'RvAdapterHelper'//项目名称
-    publishVersion = '1.0.2'//版本号
+    publishVersion = '1.0.3'//版本号
     desc = 'Recycleview Adapter helper'//描述，不重要
     website = 'https://github.com/DeveloperZH/RvAdapterHelper.git'//网站，尽量模拟github上的地址
 }
