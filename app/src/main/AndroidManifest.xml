@@ -21,6 +21,7 @@
         <activity android:name=".activity.MultiActivity" />
         <activity android:name=".activity.GroupActivity"/>
         <activity android:name=".activity.StaggeredActivity"/>
+        <activity android:name=".activity.DragActivity"/>
     </application>
 
 </manifest>

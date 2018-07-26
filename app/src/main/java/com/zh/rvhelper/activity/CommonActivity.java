@@ -10,11 +10,13 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.zh.adapterhelperlibrary.callback.OnItemClickListener;
 import com.zh.adapterhelperlibrary.callback.OnItemLongClickListener;
 import com.zh.adapterhelperlibrary.data.AnimationType;
-import com.zh.adapterhelperlibrary.widget.ItemDragHelper;
+import com.zh.adapterhelperlibrary.widget.BaseItemDragHelper;
 import com.zh.rvhelper.R;
 import com.zh.rvhelper.adapter.CommonAdapter;
+import com.zh.rvhelper.util.MyDragCallBack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,12 +42,10 @@ public class CommonActivity extends AppCompatActivity {
         mRecycleView.setLayoutManager(linearLayoutManager);
         mCommonAdapter = new CommonAdapter(mDatas);
         headView = LayoutInflater.from(this).inflate(R.layout.head_view, null);
-//        mCommonAdapter.addHeadView(headView);
+        mCommonAdapter.addHeadView(headView);
         footView = LayoutInflater.from(this).inflate(R.layout.foot_view, null);
         mCommonAdapter.addFooterView(footView);
         mRecycleView.setAdapter(mCommonAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemDragHelper(mCommonAdapter));
-        itemTouchHelper.attachToRecyclerView(mRecycleView);
         mCommonAdapter.attachRecycleView(mRecycleView);
         mCommonAdapter.setItemAnimation(AnimationType.ENTER_RIGHT);
 
@@ -62,12 +62,12 @@ public class CommonActivity extends AppCompatActivity {
                 mCommonAdapter.addFooterView(headView);
             }
         });
-//        mCommonAdapter.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void itemClick(View view, int position) {
-//                Toast.makeText(CommonActivity.this, "itemClick = " + position, Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        mCommonAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void itemClick(View view, int position) {
+                Toast.makeText(CommonActivity.this, "itemClick = " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mCommonAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
@@ -76,18 +76,6 @@ public class CommonActivity extends AppCompatActivity {
             }
         });
 
-//        mRecycleView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                Log.i("AbstractScrollWrapper", "dy ==> " + dy);
-//            }
-//        });
     }
 
     protected void initData() {

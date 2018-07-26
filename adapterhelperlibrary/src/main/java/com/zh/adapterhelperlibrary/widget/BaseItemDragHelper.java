@@ -1,31 +1,41 @@
 package com.zh.adapterhelperlibrary.widget;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.View;
 
 import com.zh.adapterhelperlibrary.BaseRvAdapter;
 
 
 /**
- * @describe: ${todo}
+ * @describe: item拖拽的基类 外面调用的时候继承该类即可
+ * 如果没有特殊需求 只用继承该类 不用具体实现   有需求 复写相应的方法
  * @author: Z H
  * @date: 2018/7/25 14:0188
  * @pkgName: com.zh.adapterhelperlibrary.widget
  * @version: ${version}
  */
-public class ItemDragHelper extends ItemTouchHelper.Callback {
+public abstract class BaseItemDragHelper extends ItemTouchHelper.Callback {
 
-    private String TAG = ItemDragHelper.class.getSimpleName();
+    private String TAG = BaseItemDragHelper.class.getSimpleName();
     private BaseRvAdapter mBaseAdapter;
+    private boolean itemViewSwipeEnabled = true;  //是否允许滑动
+    private boolean itemLongPressDragEnabled = true; //是否允许长按拖拽
 
-    public ItemDragHelper(BaseRvAdapter adapter) {
+    public BaseItemDragHelper(BaseRvAdapter adapter) {
         this.mBaseAdapter = adapter;
     }
+
+    public void setItemViewSwipeEnabled(boolean itemViewSwipeEnabled) {
+        this.itemViewSwipeEnabled = itemViewSwipeEnabled;
+    }
+
+    public void setItemLongPressDragEnabled(boolean longPressDragEnabled) {
+        this.itemLongPressDragEnabled = longPressDragEnabled;
+    }
+
 
     /**
      * 用于设置是否处理拖拽事件和滑动事件，以及拖拽和滑动操作的方向
@@ -44,7 +54,6 @@ public class ItemDragHelper extends ItemTouchHelper.Callback {
             dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
         }
         swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-        //需要调用return makeMovementFlags(dragFlags, swipeFlags);将设置的标志位return回去
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
@@ -54,10 +63,12 @@ public class ItemDragHelper extends ItemTouchHelper.Callback {
      */
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-        Log.i(TAG, "viewHolder --> " + viewHolder.getAdapterPosition() + "--- target-->" + target.getAdapterPosition());
+        Log.i(TAG, "viewHolder --> " + viewHolder.getAdapterPosition() + "--- target-->"
+                + target.getAdapterPosition());
         int fromPos = viewHolder.getAdapterPosition();
         int toPos = target.getAdapterPosition();
-        mBaseAdapter.onItemDateChange(fromPos, toPos);
+        Log.i(TAG, "fromPos --> " + fromPos + "--- toPos-->" + toPos);
+        mBaseAdapter.onItemDragDataChange(fromPos, toPos);
         return true;
     }
 
@@ -71,7 +82,6 @@ public class ItemDragHelper extends ItemTouchHelper.Callback {
         mBaseAdapter.onItemSwipedDelete(viewHolder.getAdapterPosition());
     }
 
-
     /**
      * 在选中item的时候  回调该方法
      */
@@ -81,7 +91,7 @@ public class ItemDragHelper extends ItemTouchHelper.Callback {
         switch (actionState) {
             case ItemTouchHelper.ACTION_STATE_IDLE:
                 Log.i(TAG, "闲置状态");
-                // TODO: 2018/7/25 这种状态 itemView 为Null 需要在clearView操作
+                //  这种状态 itemView 为Null
                 break;
             case ItemTouchHelper.ACTION_STATE_DRAG:
                 Log.i(TAG, "拖拽状态");
@@ -111,7 +121,8 @@ public class ItemDragHelper extends ItemTouchHelper.Callback {
      */
     @Override
     public boolean isItemViewSwipeEnabled() {
-        return super.isItemViewSwipeEnabled();
+//        return super.isItemViewSwipeEnabled();
+        return itemViewSwipeEnabled;
     }
 
     /**
@@ -120,7 +131,8 @@ public class ItemDragHelper extends ItemTouchHelper.Callback {
      */
     @Override
     public boolean isLongPressDragEnabled() {
-        return super.isLongPressDragEnabled();
+//        return super.isLongPressDragEnabled();
+        return itemLongPressDragEnabled;
     }
 
     /**

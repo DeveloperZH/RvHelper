@@ -1,20 +1,20 @@
 package com.zh.adapterhelperlibrary.callback;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
 import com.zh.adapterhelperlibrary.data.AnimationType;
+import com.zh.adapterhelperlibrary.widget.BaseItemDragHelper;
 
 /**
- * @describe: ${adapter暴露给外部调用的方法}
+ * @describe: adapter暴露给外部调用的方法
  * @author: Z H
  * @date: 2018/7/25 9:53
  * @pkgName: com.zh.adapterhelperlibrary.callback
  * @version: ${version}
  */
 public interface OpenCallback {
-
-    /*****************基础功能*******************************/
 
     /**
      * 添加HeadView
@@ -37,7 +37,6 @@ public interface OpenCallback {
      */
     void attachRecycleView(RecyclerView recyclerView);
 
-    /*****************动画相关*******************************/
 
     /**
      * 是否开启动画
@@ -54,4 +53,31 @@ public interface OpenCallback {
      * @param animationType {@link AnimationType}
      */
     void setItemAnimation(AnimationType animationType);
+
+
+    /**
+     * 是否开启item的滑动模式
+     * 默认开启
+     *
+     * @param swipeEnabled true or false
+     */
+    void setItemSwipeEnabled(boolean swipeEnabled);
+
+    /**
+     * 是否开启item的长按拖拽模式
+     * 默认开启
+     *
+     * @param dragEnabled true or false
+     */
+    void setItemLongPressDragEnabled(boolean dragEnabled);
+
+    /**
+     * 设置拖拽的回调
+     * 当复写该方法 默认支持拖拽 支持滑动
+     * 如果需要禁用某功能 调用 {@link setItemSwipeEnabled}
+     * 或者{@link setItemLongPressDragEnabled}
+     *
+     * @param helper BaseItemDragHelper的子类
+     */
+    void setDragCallback(BaseItemDragHelper helper);
 }

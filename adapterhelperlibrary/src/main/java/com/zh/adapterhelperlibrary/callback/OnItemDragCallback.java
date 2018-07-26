@@ -12,7 +12,7 @@ public interface OnItemDragCallback {
     /**
      * item拖拽之后数据的变化
      */
-    void onItemDateChange(int fromPos, int toPos);
+    void onItemDragDataChange(int fromPos, int toPos);
 
     /**
      * item 滑动删除

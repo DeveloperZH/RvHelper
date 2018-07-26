@@ -2,15 +2,13 @@ package com.zh.adapterhelperlibrary;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +19,7 @@ import android.view.animation.LinearInterpolator;
 
 import com.zh.adapterhelperlibrary.callback.OnItemDragCallback;
 import com.zh.adapterhelperlibrary.callback.OpenCallback;
+import com.zh.adapterhelperlibrary.widget.BaseItemDragHelper;
 import com.zh.adapterhelperlibrary.widget.animation.AlphaAnimation;
 import com.zh.adapterhelperlibrary.widget.animation.EnterLeftAnimation;
 import com.zh.adapterhelperlibrary.widget.animation.EnterRightAnimation;
@@ -41,7 +40,7 @@ import java.util.List;
  * @version: ${version}
  */
 public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends RecyclerView.Adapter<K>
-        implements OpenCallback,OnItemDragCallback {
+        implements OpenCallback, OnItemDragCallback {
 
     private BaseAnimation mSelectAnimation;
     private BaseAnimation mDefaultAnimation = new EnterLeftAnimation();
@@ -52,6 +51,8 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
     private boolean isOpenAnimation = false;
 
     List<T> mData;
+    private RecyclerView mRecyclerView;
+    private BaseItemDragHelper mBaseItemDragHelper;
     private int mLayoutResId;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
@@ -150,7 +151,6 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         return position >= mHeaderViews.size() + mData.size();
     }
 
-
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
@@ -182,10 +182,11 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
     }
 
     @Override
-    public void onItemDateChange(int fromPos, int toPos) {
-        Log.i("onItemDateChange","'onItemDateChange");
-        Collections.swap(mData,fromPos,toPos);
-        notifyItemMoved(fromPos,toPos);
+    public void onItemDragDataChange(int fromPos, int toPos) {
+        Log.i("onItemDateChange", "'onItemDateChange");
+        int mHeadViewCounts = mHeaderViews == null ? 0 : mHeaderViews.size();
+        Collections.swap(mData, fromPos - mHeadViewCounts, toPos - mHeadViewCounts);
+        notifyItemMoved(fromPos, toPos);
     }
 
     @Override
@@ -226,7 +227,6 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
         this.isOpenAnimation = isOpenAnimation;
     }
 
-
     @Override
     public void setItemAnimation(AnimationType animationType) {
         switch (animationType) {
@@ -266,6 +266,33 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
     }
 
 
+    /***************************item拖拽相关*********************************************************/
+    @Override
+    public void setDragCallback(BaseItemDragHelper helper) {
+        if (null == mRecyclerView) {
+            throw new NullPointerException("请先调用attachRecycleView()绑定rv和adapter");
+        }
+        this.mBaseItemDragHelper = helper;
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(helper);
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
+    }
+
+    @Override
+    public void setItemSwipeEnabled(boolean isOpenDrag) {
+        if (null == mBaseItemDragHelper) {
+            throw new NullPointerException("请先调用setDragCallback()方法");
+        }
+        mBaseItemDragHelper.setItemViewSwipeEnabled(isOpenDrag);
+    }
+
+    @Override
+    public void setItemLongPressDragEnabled(boolean dragEnabled) {
+        if (null == mBaseItemDragHelper) {
+            throw new NullPointerException("请先调用setDragCallback()方法");
+        }
+        mBaseItemDragHelper.setItemLongPressDragEnabled(dragEnabled);
+    }
+
     /***************************通用方法*********************************************************/
 
     /**
@@ -279,6 +306,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
 
     @Override
     public void attachRecycleView(RecyclerView recyclerView) {
+        this.mRecyclerView = recyclerView;
         doRvScroll(recyclerView);
     }
 
