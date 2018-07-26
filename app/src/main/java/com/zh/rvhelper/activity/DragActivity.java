@@ -38,6 +38,7 @@ public class DragActivity extends Activity {
         mRecycleView.setLayoutManager(linearLayoutManager);
         DragAdapter dragAdapter = new DragAdapter(getDataList());
         mRecycleView.setAdapter(dragAdapter);
+        dragAdapter.setOpenAnimation(true);
 
         //添加item拖拽功能
         dragAdapter.attachRecycleView(mRecycleView);

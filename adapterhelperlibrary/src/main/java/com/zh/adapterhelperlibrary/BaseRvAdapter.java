@@ -49,6 +49,9 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
      */
     private boolean isOpenAnimation = false;
 
+    //下拉的时候关闭item动画
+    private boolean pullDownCloseAnimation;
+
     List<T> mData;
     private RecyclerView mRecyclerView;
     private BaseItemDragHelper mBaseItemDragHelper;
@@ -208,11 +211,11 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0) {
-                    isOpenAnimation = true;
+                    pullDownCloseAnimation = true;
                 } else if (dy < 0) {
-                    isOpenAnimation = false;
+                    pullDownCloseAnimation = false;
                 } else {
-                    isOpenAnimation = false;
+                    pullDownCloseAnimation = false;
                 }
             }
         });
@@ -246,7 +249,7 @@ public abstract class BaseRvAdapter<T, K extends BaseViewHolder> extends Recycle
 
 
     private void addItemAnimation(BaseViewHolder holder) {
-        if (isOpenAnimation) {
+        if (isOpenAnimation && pullDownCloseAnimation) {
             BaseAnimation animation;
             if (mSelectAnimation == null) {
                 animation = mDefaultAnimation;
